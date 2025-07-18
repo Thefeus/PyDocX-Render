@@ -1,0 +1,44 @@
+# pydocx_render/layout/line_breaker.pyx
+# distutils: language=c++
+
+cimport cython
+import freetype
+
+cdef class FontMetrics:
+    cdef face
+    
+    def __init__(self, font_path):
+        self.face = freetype.Face(font_path)
+
+    @cython.cfunc
+    def get_text_width(self, text: str, font_size: int) -> float:
+        self.face.set_char_size(font_size * 64)
+        cdef float width = 0.0
+        cdef char prev_char = 0
+        
+        for char_code in text:
+            self.face.load_char(char_code)
+            width += self.face.glyph.advance.x
+            
+        return width / 64.0
+
+def layout_paragraph(text, FontMetrics metrics, float max_width, int font_size):
+    cdef list lines = []
+    cdef list words = text.split(' ')
+    cdef str current_line = ""
+    
+    if not words:
+        return []
+
+    current_line = words[0]
+    for i in range(1, len(words)):
+        word = words[i]
+        test_line = current_line + " " + word
+        if metrics.get_text_width(test_line, font_size) <= max_width:
+            current_line = test_line
+        else:
+            lines.append(current_line)
+            current_line = word
+    
+    lines.append(current_line)
+    return lines

@@ -1,0 +1,6 @@
+lxml
+Pillow
+PyMuPDF
+cython
+freetype-py
+numpy

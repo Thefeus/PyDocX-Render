@@ -1,0 +1,19 @@
+# setup.py
+from setuptools import setup, Extension
+from Cython.Build import cythonize
+import numpy
+
+# Definimos nossa extensao Cython
+extensions = [
+    Extension(
+        "pydocx_render.layout.line_breaker",
+        ["pydocx_render/layout/line_breaker.pyx"],
+        include_dirs=[numpy.get_include()]
+    ),
+]
+
+setup(
+    name="PyDocX-Render",
+    ext_modules=cythonize(extensions),
+    zip_safe=False,
+)

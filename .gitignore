@@ -1,0 +1,19 @@
+# Ambiente Virtual
+venv/
+
+# Arquivos de Cache do Python
+__pycache__/
+*.pyc
+
+# Pastas de Build e Distribuição
+build/
+dist/
+*.egg-info/
+temp_build/
+
+# Arquivos compilados do Cython
+*.so
+*.pyd
+
+# Pasta de saída
+output/
